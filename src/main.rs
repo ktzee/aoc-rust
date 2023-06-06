@@ -1,36 +1,26 @@
 use std::fs;
 
-
 fn main() {
     // TODO: bad. Path is relative and hardcoded
-    let file_path = "day1/input.txt";
-    
-    let contents = fs::read_to_string(file_path)
-        .expect("Should have been able to read file");
+    let file_path = "day2/input.txt";
 
+    let contents = fs::read_to_string(file_path).expect("Should have been able to read file");
 
-    let mut biggest: i32 = 0;
-    let mut counter: i32 = 0;
-    // TODO: there's probably a way to do this with a fixes size array?
-    let mut top_three: Vec<i32> = Vec::new();
+    let mut score: i32 = 0;
+
     for line in contents.lines() {
-        if line != "" {
-            counter = counter + line.parse::<i32>().unwrap();
-        } 
-        else {
-           top_three.push(counter);
-           biggest = std::cmp::max(biggest, counter);
-           counter = 0;
+        match line {
+            "A X" => score = score + 4, // rock vs rock, draw + 1pt
+            "A Y" => score = score + 8, // rock vs paper, win + 2pt
+            "A Z" => score = score + 3, // rock vs scissors, loss + 3pt
+            "B X" => score = score + 1, // paper vs rock, loss + 1pt
+            "B Y" => score = score + 5, // paper vs paper, draw + 2pt
+            "B Z" => score = score + 9, // paper vs scissors, win + 3pt
+            "C X" => score = score + 7, // scissors vs rock, win + 1pt
+            "C Y" => score = score + 2, // scissors vs paper, loss + 2pt
+            "C Z" => score = score + 6, // scissors vs scissors, draw + 3pt
+            _ => println!("Something went wrong"),
         }
     }
-    top_three.sort();
-    let len = top_three.len();
-    // TODO: this would panic if there are less than 3 elements in the Vec
-    let tot = top_three[len-1] + top_three[len-2] + top_three[len-3];
-    println!("The elf holding the most calories holds {} calories.", biggest);
-    println!("#1 is holding {:?} calories", top_three[len-1]);
-    println!("#2 is holding {:?} calories", top_three[len-2]);
-    println!("#3 is holding {:?} calories", top_three[len-3]);
-    println!("The top 3 elves are holding {} calories", tot)
-
+    println!("{}", score)
 }
