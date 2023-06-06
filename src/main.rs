@@ -2,6 +2,7 @@ use std::fs;
 
 
 fn main() {
+    // TODO: bad. Path is relative and hardcoded
     let file_path = "day1/input.txt";
     
     let contents = fs::read_to_string(file_path)
